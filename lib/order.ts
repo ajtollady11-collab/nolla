@@ -1,3 +1,4 @@
+import { countries, UK_CODE } from '@/data/countries';
 import { products, priceFor, describeSelections, GIFT, type ProductSlug } from '@/data/products';
 import { shippingRegions, type ShippingMethodId } from '@/data/site';
 import { discountCodes } from '@/data/marketing';
@@ -93,4 +94,50 @@ export function priceOrder(inputLines: OrderInputLine[], shippingId: string, cod
       total: subtotal - (discount?.amount ?? 0) + shippingMethod.price,
     },
   };
+}
+
+/* ───────────────────────── Delivery details ───────────────────────── */
+
+
+export type DeliveryDetails = {
+  email: string;
+  name: string;
+  phone: string;
+  address1: string;
+  address2?: string;
+  city: string;
+  region?: string;
+  postcode: string;
+  country: string;
+};
+
+export type DeliveryResult = { ok: true; delivery: DeliveryDetails } | { ok: false; error: string; field?: keyof DeliveryDetails };
+
+const clip = (v: unknown, max = 120) => String(v ?? '').trim().slice(0, max);
+
+/** Validates delivery details and that the delivery option matches the country. */
+export function validateDelivery(input: Partial<DeliveryDetails> | undefined, shippingId: string): DeliveryResult {
+  const d: DeliveryDetails = {
+    email: clip(input?.email, 160).toLowerCase(),
+    name: clip(input?.name),
+    phone: clip(input?.phone, 40),
+    address1: clip(input?.address1),
+    address2: clip(input?.address2),
+    city: clip(input?.city, 80),
+    region: clip(input?.region, 80),
+    postcode: clip(input?.postcode, 20).toUpperCase(),
+    country: clip(input?.country, 2).toUpperCase(),
+  };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) return { ok: false, error: 'Please enter a valid email address.', field: 'email' };
+  if (d.name.length < 2) return { ok: false, error: 'Please enter your full name.', field: 'name' };
+  if (d.phone.replace(/\D/g, '').length < 7) return { ok: false, error: 'Please enter a phone number for the courier.', field: 'phone' };
+  if (!countries.some((c) => c.code === d.country)) return { ok: false, error: 'Please choose your country.', field: 'country' };
+  if (d.address1.length < 3) return { ok: false, error: 'Please enter your address.', field: 'address1' };
+  if (d.city.length < 2) return { ok: false, error: 'Please enter your town or city.', field: 'city' };
+  if (d.postcode.length < 2) return { ok: false, error: 'Please enter your postcode.', field: 'postcode' };
+
+  const isUK = d.country === UK_CODE;
+  if (isUK && shippingId !== 'uk-free') return { ok: false, error: 'Please choose a UK delivery option.' };
+  if (!isUK && !shippingId.startsWith('intl-')) return { ok: false, error: 'Please choose an international delivery option.' };
+  return { ok: true, delivery: d };
 }

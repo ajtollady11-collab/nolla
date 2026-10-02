@@ -41,6 +41,8 @@ type CartContextValue = {
   discountAmount: number;
   total: number;
   clear: () => void;
+  /** True once the saved cart has been loaded */
+  ready: boolean;
   suggestion: BundleSuggestion | null;
   isOpen: boolean;
   open: () => void;
@@ -67,6 +69,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setShippingMethod(shippingRegions[region].methods[0].id);
   }, []);
   const hydrated = useRef(false);
+  const [ready, setReady] = useState(false);
 
   // Load persisted cart once on mount
   useEffect(() => {
@@ -83,6 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       /* ignore corrupt storage */
     }
     hydrated.current = true;
+    setReady(true);
   }, []);
 
   // Persist on change (after hydration)
@@ -143,6 +147,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       discountAmount,
       total: subtotal - discountAmount + shippingCost,
       clear,
+      ready,
       suggestion: bundleSuggestion(state.lines),
       isOpen,
       open,
@@ -153,7 +158,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       upgradeToNest,
       lastAddedKey,
     }),
-    [state.lines, subtotal, discountCode, discountAmount, applyDiscountCode, removeDiscountCode, clear, shippingRegion, setShippingRegion, method.id, shippingCost, isOpen, open, close, add, setQuantity, remove, upgradeToNest, lastAddedKey],
+    [state.lines, subtotal, discountCode, discountAmount, applyDiscountCode, removeDiscountCode, clear, ready, shippingRegion, setShippingRegion, method.id, shippingCost, isOpen, open, close, add, setQuantity, remove, upgradeToNest, lastAddedKey],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -12,7 +12,6 @@ import { shippingRegions, type ShippingRegion } from '@/data/site';
 import { GiftLine } from './GiftLine';
 import { DiscountField } from './DiscountField';
 import { formatPrice } from '@/lib/format';
-import { startCheckout } from '@/lib/checkout';
 import { MAX_QTY, linePrice } from '@/lib/cart';
 import { cn } from '@/lib/cn';
 
@@ -48,18 +47,7 @@ export function CartDrawer() {
     };
   }, [isOpen, close]);
 
-  async function handleCheckout() {
-    if (pending) return;
-    setPending(true);
-    setNotice(null);
-    const result = await startCheckout(lines, shippingMethod, discountCode);
-    // Stay in the "one moment" state while the browser heads to Square
-    if (result.ok) window.location.href = result.redirectUrl;
-    else {
-      setPending(false);
-      setNotice(result.message);
-    }
-  }
+
 
   const empty = lines.length === 0;
 
@@ -305,8 +293,8 @@ export function CartDrawer() {
                 </p>
               )}
 
-              <Button onClick={handleCheckout} disabled={pending} size="lg" fullWidth className="mt-5">
-                {pending ? 'One moment…' : 'Checkout'}
+              <Button href="/checkout" onClick={close} size="lg" fullWidth className="mt-5">
+                Checkout
               </Button>
               <p className="mt-2 text-center text-[0.68rem] text-charcoal/45">Secure payment by Square · Apple Pay & Google Pay accepted</p>
               <div className="mt-2 flex justify-center">

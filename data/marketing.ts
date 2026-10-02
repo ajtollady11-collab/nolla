@@ -60,7 +60,7 @@ export const popupTriggers = {
   scrollDepth: 0.55,
   exitIntentMinMs: 3_000,
   /** Never shown on these paths */
-  excludePaths: [] as string[],
+  excludePaths: ['/checkout'] as string[],
 };
 
 /* ───────────────────────────── QUIZ ───────────────────────────── */

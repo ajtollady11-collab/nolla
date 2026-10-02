@@ -1,14 +1,18 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import type { PricedOrder } from './order';
+import type { DeliveryDetails, PricedOrder } from './order';
+import { countryName } from '@/data/countries';
 
 /**
- * Square Checkout API: creates a Square-hosted payment page for an order.
- * SERVER ONLY. Reads secrets from environment variables (set in Vercel):
- *   SQUARE_ACCESS_TOKEN   your access token (Sandbox or Production)
- *   SQUARE_LOCATION_ID    the location that takes the payments
- *   SQUARE_ENVIRONMENT    "sandbox" (testing) or "production" (real money)
- * Optional: SQUARE_API_BASE_URL overrides the API host (used for local testing).
+ * Square Checkout API: creates a Square-hosted PAYMENT page for an order.
+ * Delivery details are collected on our own /checkout page (Square's own
+ * address/shipping step proved unreliable), so Square only takes the card.
+ * The customer's name, address, email and phone are attached to the order
+ * as a shipment fulfilment and summarised in the payment note.
+ *
+ * SERVER ONLY. Environment variables (set in Vercel):
+ *   SQUARE_ACCESS_TOKEN, SQUARE_LOCATION_ID, SQUARE_ENVIRONMENT ("sandbox" | "production")
+ * Optional: SQUARE_API_BASE_URL overrides the API host (local testing).
  */
 
 const SQUARE_VERSION = '2024-01-18';
@@ -24,34 +28,94 @@ function apiBase(): string {
 
 const gbp = (amount: number) => ({ amount, currency: 'GBP' });
 
-export function buildPaymentLinkBody(order: PricedOrder, opts: { redirectUrl: string; supportEmail?: string; includeGift?: boolean }) {
-  const includeGift = opts.includeGift ?? true;
-  const items = order.lines.filter((l) => includeGift || !l.isGift);
+/** Optional parts that are dropped one by one if Square rejects them */
+type Options = {
+  includeGift: boolean;
+  includeFulfillment: boolean;
+  shippingAs: 'service_charge' | 'line_item';
+  prefillEmail: boolean;
+};
+
+function deliverySummary(d: DeliveryDetails, order: PricedOrder): string {
+  const address = [d.address1, d.address2, d.city, d.region, d.postcode, countryName(d.country)].filter(Boolean).join(', ');
+  return `SHIP TO: ${d.name}, ${address} | ${d.phone} | ${d.email} | ${order.shipping.label}`.slice(0, 480);
+}
+
+export function buildPaymentLinkBody(
+  order: PricedOrder,
+  delivery: DeliveryDetails,
+  ctx: { redirectUrl: string; supportEmail?: string },
+  opt: Options,
+) {
+  const products = order.lines.filter((l) => opt.includeGift || !l.isGift);
+  const discountAsLineItems = Boolean(order.discount) && opt.shippingAs === 'line_item';
+
+  const lineItems: Record<string, unknown>[] = products.map((l) => ({
+    // Name includes the variant so it's obvious what to order from CJ
+    name: l.variant ? `${l.name} (${l.variant})` : l.name,
+    quantity: String(l.quantity),
+    base_price_money: gbp(l.unitPrice),
+    ...(discountAsLineItems && !l.isGift && { applied_discounts: [{ discount_uid: 'code' }] }),
+  }));
+  if (opt.shippingAs === 'line_item' && order.shipping.price > 0) {
+    lineItems.push({ name: `Delivery: ${order.shipping.label}`, quantity: '1', base_price_money: gbp(order.shipping.price) });
+  }
+
   return {
     idempotency_key: randomUUID(),
     order: {
       location_id: process.env.SQUARE_LOCATION_ID,
-      line_items: items.map((l) => ({
-        // Name includes the variant so it's obvious what to order from CJ
-        name: l.variant ? `${l.name} (${l.variant})` : l.name,
-        quantity: String(l.quantity),
-        base_price_money: gbp(l.unitPrice),
-      })),
+      line_items: lineItems,
       ...(order.discount && {
         discounts: [
-          { uid: 'code', name: `${order.discount.code} (${order.discount.percent}% off)`, percentage: String(order.discount.percent), scope: 'ORDER' },
+          {
+            uid: 'code',
+            name: `${order.discount.code} (${order.discount.percent}% off)`,
+            percentage: String(order.discount.percent),
+            scope: discountAsLineItems ? 'LINE_ITEM' : 'ORDER',
+          },
+        ],
+      }),
+      ...(opt.shippingAs === 'service_charge' &&
+        order.shipping.price > 0 && {
+          service_charges: [
+            { name: order.shipping.label, amount_money: gbp(order.shipping.price), calculation_phase: 'SUBTOTAL_PHASE', taxable: false },
+          ],
+        }),
+      ...(opt.includeFulfillment && {
+        fulfillments: [
+          {
+            type: 'SHIPMENT',
+            state: 'PROPOSED',
+            shipment_details: {
+              recipient: {
+                display_name: delivery.name,
+                email_address: delivery.email,
+                phone_number: delivery.phone,
+                address: {
+                  address_line_1: delivery.address1,
+                  ...(delivery.address2 && { address_line_2: delivery.address2 }),
+                  locality: delivery.city,
+                  ...(delivery.region && { administrative_district_level_1: delivery.region }),
+                  postal_code: delivery.postcode,
+                  country: delivery.country,
+                },
+              },
+            },
+          },
         ],
       }),
     },
     checkout_options: {
-      redirect_url: opts.redirectUrl,
-      ask_for_shipping_address: true,
+      redirect_url: ctx.redirectUrl,
+      // We collect the address ourselves; Square only takes payment
+      ask_for_shipping_address: false,
       accepted_payment_methods: { apple_pay: true, google_pay: true },
-      ...(order.shipping.price > 0 && { shipping_fee: { name: order.shipping.label, charge: gbp(order.shipping.price) } }),
-      ...(opts.supportEmail && { merchant_support_email: opts.supportEmail }),
+      ...(ctx.supportEmail && { merchant_support_email: ctx.supportEmail }),
     },
-    // Shown in your Square dashboard: the delivery option the customer picked
-    payment_note: `Nolla order · ${order.shipping.label}${includeGift ? '' : ' · + FREE Nimbus cloud pillow'}`,
+    ...(opt.prefillEmail && { pre_populated_data: { buyer_email: delivery.email } }),
+    // Always visible on the payment in your Square dashboard, even if a fallback kicked in
+    payment_note: `${deliverySummary(delivery, order)}${opt.includeGift ? '' : ' | + FREE Nimbus cloud pillow'}`,
   };
 }
 
@@ -77,12 +141,26 @@ async function post(body: unknown): Promise<PaymentLinkResult> {
   return { ok: false, status: res.status, detail };
 }
 
-export async function createPaymentLink(order: PricedOrder, opts: { redirectUrl: string; supportEmail?: string }): Promise<PaymentLinkResult> {
-  const first = await post(buildPaymentLinkBody(order, { ...opts, includeGift: true }));
-  if (first.ok || first.status >= 500) return first;
-  // If Square refuses the £0 gift line, retry with the gift noted on the payment instead
-  if (/line_items|base_price_money|amount/i.test(first.detail)) {
-    return post(buildPaymentLinkBody(order, { ...opts, includeGift: false }));
+export async function createPaymentLink(
+  order: PricedOrder,
+  delivery: DeliveryDetails,
+  ctx: { redirectUrl: string; supportEmail?: string },
+): Promise<PaymentLinkResult> {
+  let opt: Options = { includeGift: true, includeFulfillment: true, shippingAs: 'service_charge', prefillEmail: true };
+  let result = await post(buildPaymentLinkBody(order, delivery, ctx, opt));
+
+  // If Square rejects an optional part, drop just that part and retry
+  for (let i = 0; i < 4 && !result.ok && result.status < 500; i++) {
+    const d = result.detail;
+    const next: Options = { ...opt };
+    if (opt.includeFulfillment && /fulfillment|recipient|shipment|phone|postal|address/i.test(d)) next.includeFulfillment = false;
+    else if (opt.shippingAs === 'service_charge' && /service_charge/i.test(d)) next.shippingAs = 'line_item';
+    else if (opt.prefillEmail && /pre_populated|buyer_email/i.test(d)) next.prefillEmail = false;
+    else if (opt.includeGift && /line_items|base_price_money|amount/i.test(d)) next.includeGift = false;
+    else break;
+    console.warn('[checkout] Square rejected an optional field, retrying without it:', d);
+    opt = next;
+    result = await post(buildPaymentLinkBody(order, delivery, ctx, opt));
   }
-  return first;
+  return result;
 }

@@ -120,10 +120,11 @@ styles/globals.css   base styles
 
 ## Checkout (Square)
 
-- **Flow:** cart → `POST /api/checkout` → server re-prices the cart from `data/products.ts` (browser prices are never trusted) → creates a Square-hosted payment link → customer pays (card, Apple Pay, Google Pay) → Square redirects to `/checkout/success`, which empties the cart.
-- **What Square receives:** one line per product with colour/size in the name (copy straight into your CJ order), the free Nimbus™ as a £0 line, NOLLA10 as an order discount, international shipping as a shipping fee, and a request for the delivery address.
-- **Files:** `lib/order.ts` (pricing + validation, shared with the cart), `lib/square.ts` (server-only Square call), `app/api/checkout/route.ts`, `components/cart/DiscountField.tsx`, `app/checkout/success/page.tsx`.
+- **Flow:** cart → **/checkout** (our own delivery details page: email, name, phone, address, country) → `POST /api/checkout` → server re-prices the cart from `data/products.ts`, validates the details, and checks the delivery option matches the country → creates a Square payment page (card / Apple Pay / Google Pay only; Square's own address step is switched off) → `/checkout/success` empties the cart.
+- **Why our own details page:** Square's hosted shipping-address step blocked payment ("enter a valid address to see shipping methods"), and UK sellers report the same problem widely. Collecting details ourselves also means the country decides the delivery price.
+- **What Square receives:** one line per product with colour/size in the name, the free Nimbus™ (£0), NOLLA10 as a discount, international delivery as a service charge, and the customer's name/address/email/phone as a SHIPMENT fulfilment. A one-line "SHIP TO: …" summary is always in the payment note too.
+- **Fallbacks:** if Square rejects an optional part (fulfilment, service charge, email prefill, £0 gift line) the server drops just that part and retries, so checkout keeps working; the payment note still has everything.
+- **Files:** `app/checkout/page.tsx`, `components/checkout/CheckoutForm.tsx`, `lib/order.ts` (pricing + delivery validation), `lib/square.ts`, `app/api/checkout/route.ts`, `data/countries.ts` (countries we deliver to).
 - **Discount codes:** `discountCodes` in `data/marketing.ts`. Not yet limited to one use per customer.
-- **Environment variables** (see `.env.example`): `SQUARE_ENVIRONMENT`, `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`, `NEXT_PUBLIC_SITE_URL`, `SUPPORT_EMAIL`. Without them, checkout shows "Checkout isn't connected yet".
-- **Known gap:** customers pick UK / outside UK in the cart, but Square's address form doesn't enforce it. Check the country on each order before fulfilling (manual fulfilment means you'll see every order anyway).
-- **Deploying:** this build needs a server, so it's no longer a drag-and-drop folder. Push the project to GitHub and import it in Vercel (it auto-deploys on every push).
+- **Environment variables** (see `.env.example`): `SQUARE_ENVIRONMENT`, `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`, `NEXT_PUBLIC_SITE_URL`, `SUPPORT_EMAIL`.
+- **Deploying:** push to GitHub; Vercel rebuilds automatically.
