@@ -17,13 +17,17 @@ import { countryName } from '@/data/countries';
 
 const SQUARE_VERSION = '2024-01-18';
 
+// Trim + normalise so a stray space or capital letter in Vercel's settings can't break checkout
+const env = (key: string) => (process.env[key] ?? '').trim();
+const isProduction = () => env('SQUARE_ENVIRONMENT').toLowerCase() === 'production';
+
 export function squareConfigured(): boolean {
-  return Boolean(process.env.SQUARE_ACCESS_TOKEN && process.env.SQUARE_LOCATION_ID);
+  return Boolean(env('SQUARE_ACCESS_TOKEN') && env('SQUARE_LOCATION_ID'));
 }
 
 function apiBase(): string {
-  if (process.env.SQUARE_API_BASE_URL) return process.env.SQUARE_API_BASE_URL.replace(/\/$/, '');
-  return process.env.SQUARE_ENVIRONMENT === 'production' ? 'https://connect.squareup.com' : 'https://connect.squareupsandbox.com';
+  if (env('SQUARE_API_BASE_URL')) return env('SQUARE_API_BASE_URL').replace(/\/$/, '');
+  return isProduction() ? 'https://connect.squareup.com' : 'https://connect.squareupsandbox.com';
 }
 
 const gbp = (amount: number) => ({ amount, currency: 'GBP' });
@@ -64,7 +68,7 @@ export function buildPaymentLinkBody(
   return {
     idempotency_key: randomUUID(),
     order: {
-      location_id: process.env.SQUARE_LOCATION_ID,
+      location_id: env('SQUARE_LOCATION_ID'),
       line_items: lineItems,
       ...(order.discount && {
         discounts: [
@@ -111,6 +115,9 @@ export function buildPaymentLinkBody(
       // We collect the address ourselves; Square only takes payment
       ask_for_shipping_address: false,
       accepted_payment_methods: { apple_pay: true, google_pay: true },
+      // Hide Square's own coupon/loyalty boxes: discount codes are applied on our checkout page
+      enable_coupon: false,
+      enable_loyalty: false,
       ...(ctx.supportEmail && { merchant_support_email: ctx.supportEmail }),
     },
     ...(opt.prefillEmail && { pre_populated_data: { buyer_email: delivery.email } }),
@@ -125,7 +132,7 @@ async function post(body: unknown): Promise<PaymentLinkResult> {
   const res = await fetch(`${apiBase()}/v2/online-checkout/payment-links`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${process.env.SQUARE_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${env('SQUARE_ACCESS_TOKEN')}`,
       'Square-Version': SQUARE_VERSION,
       'Content-Type': 'application/json',
     },
@@ -137,6 +144,9 @@ async function post(body: unknown): Promise<PaymentLinkResult> {
     errors?: { code?: string; detail?: string; field?: string }[];
   };
   if (res.ok && json.payment_link?.url) return { ok: true, url: json.payment_link.url, orderId: json.payment_link.order_id };
+  if (res.status === 401) {
+    console.error(`[checkout] Square says the access token is wrong for ${isProduction() ? 'PRODUCTION' : 'SANDBOX'}. Check SQUARE_ACCESS_TOKEN and SQUARE_ENVIRONMENT in Vercel.`);
+  }
   const detail = json.errors?.map((e) => [e.code, e.field, e.detail].filter(Boolean).join(': ')).join(' | ') || `HTTP ${res.status}`;
   return { ok: false, status: res.status, detail };
 }
