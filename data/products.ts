@@ -82,7 +82,7 @@ export type Product = {
  *  SUPPLIER VARIANTS (CJdropshipping)
  *  Nuv™:    "Rex Rabbit Velvet Blanket" (CJZW217296206FU), 6 colours, 6 sizes
  *  Nook™:   "Winter Blanket Flannel Hooded Pajamas" (CJJT165317703CX), 3 colours, 3 lengths
- *  Nimbus™: "Plush cloud pillow" (CJJJJFZT00537-White-50cm), free gift
+ *  Nimbus™: "Plush cloud pillow" (CJJJJFZT00537-White-25cm), free gift
  * ───────────────────────────────────────────────────────────── */
 
 /**
@@ -250,7 +250,7 @@ export const products: Record<ProductSlug, Product> = {
     subtitle: 'A cloud pillow, free with every order.',
     positioning: 'A little cloud to come home to.',
     price: 0,
-    shortDescription: 'A soft, squishy 50 cm cloud pillow. Added free to every order, no code needed.',
+    shortDescription: 'A soft, squishy little 25 cm cloud pillow. Added free to every order, no code needed.',
     images: IMAGES.nimbus,
     options: [],
     highlights: [],
