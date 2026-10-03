@@ -82,7 +82,7 @@ export function priceOrder(inputLines: OrderInputLine[], shippingId: string, cod
     : null;
 
   // The free gift rides along on every order
-  lines.push({ slug: GIFT.slug, name: `FREE GIFT: ${GIFT.name} cloud pillow`, variant: 'White, 50 cm', quantity: 1, unitPrice: 0, isGift: true });
+  lines.push({ slug: GIFT.slug, name: `FREE GIFT: ${GIFT.name} cloud pillow`, variant: 'White, 25 cm', quantity: 1, unitPrice: 0, isGift: true });
 
   return {
     ok: true,
