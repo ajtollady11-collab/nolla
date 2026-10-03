@@ -1,5 +1,5 @@
 """
-Soft placeholder illustrations for the Nuv™, Nook™, Nest™ and Nimbus™.
+Soft placeholder illustration for the Nimbus™ gift.
 They stand in until real photography is ready.
 Run:  python3 scripts/generate-placeholders.py
 """
@@ -126,15 +126,8 @@ def cloud(uid, cx, cy, s):
 NUV = {'tosca-white': '#EFE9DF', 'grey': '#A3A09D', 'charcoal': '#55555A', 'coffee': '#A88C72', 'sage': '#A9B79B', 'pink': '#DDB0B4'}
 NOOK = {'light-grey': '#77777B', 'navy': '#2F3756', 'pink': '#E2B8BD'}
 
-scenes = {}
-for name, c in NUV.items():
-    scenes[f'nuv-{name}.svg'] = frame(f'u{name}', blanket(f'u{name}', 500, 560, 1.15, c))
-for name, c in NOOK.items():
-    scenes[f'nook-{name}.svg'] = frame(f'k{name}', hoodie(f'k{name}', 500, 640, 1.0, c), bg='#EEE7DD')
-scenes['nimbus.svg'] = frame('n', cloud('n', 500, 640, 1.1), bg='#E9DFD2')
-scenes['nest.svg'] = frame('s', blanket('s1', 370, 560, 0.78, NUV['tosca-white'])
-                           + hoodie('s2', 690, 720, 0.6, NOOK['light-grey'])
-                           + cloud('s3', 300, 1010, 0.42), bg='#EADFD1')
+# Only the Nimbus™ gift still uses a drawn placeholder; product photos are real.
+scenes = {'nimbus.svg': frame('n', cloud('n', 500, 640, 1.1), bg='#E9DFD2')}
 
 os.makedirs(OUT, exist_ok=True)
 for name, svg in scenes.items():

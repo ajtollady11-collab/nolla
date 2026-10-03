@@ -28,8 +28,8 @@ export type OptionValue = {
   /** Price in pence when this value sets the price (see Product.priceOptionId) */
   price?: number;
   compareAtPrice?: number;
-  /** Photo shown first in the gallery when this value is selected */
-  image?: ImageAsset;
+  /** Photos shown in the gallery when this value is selected (first = main photo) */
+  images?: ImageAsset[];
   /** Future: Square variation ID */
   externalId?: string;
   available?: boolean;
@@ -92,19 +92,19 @@ export type Product = {
 const COMPARE_AT_UPLIFT = 2000;
 
 const nuvColours: OptionValue[] = [
-  { value: 'tosca-white', label: 'Tosca White', swatch: '#F1ECE4' },
-  { value: 'grey', label: 'Grey', swatch: '#A3A09D' },
-  { value: 'charcoal', label: 'Charcoal', swatch: '#4C4C50' },
-  { value: 'coffee', label: 'Coffee', swatch: '#A88C72' },
-  { value: 'sage', label: 'Sage', swatch: '#A9B79B' },
-  { value: 'pink', label: 'Pink', swatch: '#DDB0B4' },
-].map((c) => ({ ...c, image: NUV_COLOUR_IMAGES[c.value] }));
+  { value: 'tosca-white', label: 'Tosca White', swatch: '#EFE8DD' },
+  { value: 'grey', label: 'Grey', swatch: '#A8A7A3' },
+  { value: 'charcoal', label: 'Charcoal', swatch: '#46484A' },
+  { value: 'coffee', label: 'Coffee', swatch: '#C4A485' },
+  { value: 'sage', label: 'Sage', swatch: '#BCC8AA' },
+  { value: 'pink', label: 'Pink', swatch: '#D9AFA9' },
+].map((c) => ({ ...c, images: NUV_COLOUR_IMAGES[c.value] }));
 
 const nookColours: OptionValue[] = [
-  { value: 'light-grey', label: 'Light Grey', swatch: '#707074' },
-  { value: 'navy', label: 'Navy', swatch: '#2C3452' },
-  { value: 'pink', label: 'Pink', swatch: '#E2B8BD' },
-].map((c) => ({ ...c, image: NOOK_COLOUR_IMAGES[c.value] }));
+  { value: 'light-grey', label: 'Light Grey', swatch: '#5F5D5C' },
+  { value: 'navy', label: 'Navy', swatch: '#27304A' },
+  { value: 'pink', label: 'Pink', swatch: '#DDB1AE' },
+].map((c) => ({ ...c, images: NOOK_COLOUR_IMAGES[c.value] }));
 
 /** One row per size. Edit prices here. */
 const nuvSizes: OptionValue[] = [
@@ -284,17 +284,27 @@ export function defaultSelections(product: Product): Record<string, string> {
 }
 
 /**
- * Gallery for the current selections: shared photos, with the selected
- * variant's own photo (e.g. the chosen blanket colour) slotted in.
- * Single products show it first; bundles show it second, after the set photo.
+ * Gallery for the current selections: the photos of each selected variant
+ * (e.g. the chosen colour), then any shared product photos.
+ * Bundles show the first photo of each piece up front, then the rest.
  */
 export function galleryFor(product: Product, selections: Record<string, string>): ImageAsset[] {
-  const variantImages = product.options
-    .map((o) => o.values.find((v) => v.value === selections[o.id])?.image)
-    .filter((img): img is ImageAsset => Boolean(img));
-  if (!variantImages.length) return product.images;
-  const at = product.isBundle ? 1 : 0;
-  return [...product.images.slice(0, at), ...variantImages, ...product.images.slice(at)];
+  const sets = product.options
+    .map((o) => o.values.find((v) => v.value === selections[o.id])?.images ?? [])
+    .filter((imgs) => imgs.length > 0);
+  const variantImages = product.isBundle
+    ? [...sets.map((imgs) => imgs[0]), ...sets.flatMap((imgs) => imgs.slice(1))]
+    : sets.flat();
+  const all = [...variantImages, ...product.images];
+  return all.length ? all : [IMAGES.hero];
+}
+
+/** Where the selected value of an option sits in the gallery (to jump there when it changes). */
+export function galleryIndexFor(product: Product, selections: Record<string, string>, optionId: string): number {
+  const opt = product.options.find((o) => o.id === optionId);
+  const first = opt?.values.find((v) => v.value === selections[optionId])?.images?.[0];
+  if (!first) return 0;
+  return Math.max(0, galleryFor(product, selections).findIndex((img) => img.src === first.src));
 }
 
 /** The main photo for a product in its default state (cards, upsells). */
