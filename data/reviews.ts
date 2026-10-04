@@ -1,13 +1,5 @@
 import type { ProductSlug } from './products';
 
-/**
- * ─────────────────────────────────────────────────────────────
- *  PLACEHOLDER REVIEWS: for layout only.
- *  These are NOT real customers. Replace this array with real
- *  reviews (e.g. from a Supabase `reviews` table) before launch.
- *  Keep the same shape and every component will keep working.
- * ─────────────────────────────────────────────────────────────
- */
 
 export type Review = {
   id: string;
@@ -20,62 +12,15 @@ export type Review = {
   placeholder?: boolean;
 };
 
-export const reviews: Review[] = [
-  {
-    id: 'sample-1',
-    name: 'Sophie M.',
-    location: 'Manchester, UK',
-    rating: 5,
-    text: 'I genuinely never want to leave it.',
-    product: 'nolla-nest',
-    placeholder: true,
-  },
-  {
-    id: 'sample-2',
-    name: 'Jess T.',
-    location: 'Leeds, UK',
-    rating: 5,
-    text: 'Film nights are a whole event now.',
-    product: 'nolla-nest',
-    placeholder: true,
-  },
-  {
-    id: 'sample-3',
-    name: 'Amira K.',
-    location: 'London, UK',
-    rating: 5,
-    text: 'The blanket is so thick and soft. Heavier than I expected, in a good way.',
-    product: 'nolla-nuv',
-    placeholder: true,
-  },
-  {
-    id: 'sample-4',
-    name: 'Callum R.',
-    location: 'Glasgow, UK',
-    rating: 5,
-    text: 'Wearing the hoodie blanket as I type this. Not taking it off.',
-    product: 'nolla-nook',
-    placeholder: true,
-  },
-  {
-    id: 'sample-5',
-    name: 'Hannah P.',
-    location: 'Bristol, UK',
-    rating: 5,
-    text: 'The little cloud pillow was such a cute surprise. My daughter stole it.',
-    product: 'nolla-nest',
-    placeholder: true,
-  },
-  {
-    id: 'sample-6',
-    name: 'Ella W.',
-    location: 'Cardiff, UK',
-    rating: 5,
-    text: 'Softest thing I own. No contest.',
-    product: 'nolla-nuv',
-    placeholder: true,
-  },
-];
+/**
+ * REAL customer reviews only. Paste them in like this:
+ *   { id: 'r1', name: 'Sophie M.', location: 'Manchester, UK', rating: 5, text: '…', product: 'nolla-nuv' },
+ * While this list is empty, the site shows a "Be one of the first" section
+ * instead of reviews, and hides the star badges.
+ */
+export const reviews: Review[] = [];
+
+export const hasReviews = reviews.length > 0;
 
 export function reviewsFor(slug?: ProductSlug): Review[] {
   if (!slug) return reviews;

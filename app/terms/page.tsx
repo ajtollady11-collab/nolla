@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { InfoPage } from '@/components/layout/InfoPage';
+import { LegalPage } from '@/components/layout/LegalPage';
+import { termsAndConditions } from '@/data/legal';
 
-export const metadata: Metadata = { title: 'Terms' };
+export const metadata: Metadata = { title: 'Terms & Conditions' };
 
 export default function Page() {
-  return <InfoPage title="Terms." intro="The terms that apply when you shop with nolla." />;
+  return <LegalPage content={termsAndConditions} />;
 }

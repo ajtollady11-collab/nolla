@@ -13,6 +13,7 @@ import { INTERNATIONAL_FROM } from '@/data/site';
 import { GiftCallout } from '@/components/gift/GiftCallout';
 import { Truck } from 'lucide-react';
 import { socialProof } from '@/data/site';
+import { hasReviews } from '@/data/reviews';
 import { formatPrice } from '@/lib/format';
 import { cn } from '@/lib/cn';
 import { TM } from '@/components/ui/TM';
@@ -60,11 +61,12 @@ export function ProductPurchase({
       </h1>
       <p className="mt-3 text-pretty font-serif text-xl font-light text-charcoal/75 sm:text-2xl">{product.subtitle}</p>
 
-      {/* Rating placeholder: wire to real review average later */}
-      <a href="#reviews" className="mt-5 inline-flex w-fit items-center gap-2 text-sm text-charcoal/60 transition-colors hover:text-charcoal">
-        <StarRating rating={socialProof.rating} />
-        <span className="underline decoration-charcoal/20 underline-offset-4">Read reviews</span>
-      </a>
+      {hasReviews && (
+        <a href="#reviews" className="mt-5 inline-flex w-fit items-center gap-2 text-sm text-charcoal/60 transition-colors hover:text-charcoal">
+          <StarRating rating={socialProof.rating} />
+          <span className="underline decoration-charcoal/20 underline-offset-4">Read reviews</span>
+        </a>
+      )}
 
       <PriceTag price={price} compareAtPrice={compareAtPrice} size="lg" className="mt-6" />
 

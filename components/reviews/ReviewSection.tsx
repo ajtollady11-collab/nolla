@@ -5,6 +5,8 @@ import { TrustBadge } from '@/components/ui/TrustBadge';
 import { reviewsFor, type Review } from '@/data/reviews';
 import type { ProductSlug } from '@/data/products';
 import { cn } from '@/lib/cn';
+import { Button } from '@/components/ui/Button';
+import { NEST } from '@/data/products';
 
 /**
  * Reviews laid out as loosely staggered bubbles (desktop) that stack
@@ -24,6 +26,29 @@ export function ReviewSection({
   className?: string;
 }) {
   const list = (reviews ?? reviewsFor(product)).slice(0, limit);
+
+  // No real reviews yet: an honest launch message instead of an empty or fake section
+  if (list.length === 0) {
+    return (
+      <section id="reviews" className={cn('scroll-mt-24 py-16 sm:py-24', className)}>
+        <div className="container-soft">
+          <Reveal className="mx-auto max-w-2xl rounded-6xl bg-white/60 px-7 py-14 text-center sm:px-12 sm:py-16">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-mocha">Just opened</p>
+            <h2 className="mx-auto mt-4 max-w-[16ch] font-serif text-[2.4rem] font-light leading-[1] tracking-[-0.035em] sm:text-display-sm">
+              Be one of the first to get cosy.
+            </h2>
+            <p className="mx-auto mt-5 max-w-[42ch] text-[1.02rem] leading-relaxed text-charcoal/70">
+              We’ve only just opened our doors. Build your nest, tell us what you think, and your review could be the first one here.
+            </p>
+            <Button href={`/products/${NEST.slug}`} size="lg" className="mt-8">
+              Build your nest
+            </Button>
+          </Reveal>
+        </div>
+      </section>
+    );
+  }
+
   const hasSamples = list.some((r) => r.placeholder);
   // Three soft columns; each column starts at a different height so the bubbles float.
   const columns: Review[][] = [[], [], []];

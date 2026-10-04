@@ -66,9 +66,9 @@ export const faqs: FAQItem[] = [
   },
   {
     id: 'returns',
-    // PLACEHOLDER
     question: 'Do you offer returns?',
-    answer: 'Our returns policy will be published here and on the Shipping & Returns page before launch.',
+    answer:
+      'Yes. You can cancel your order for any reason within 14 days of receiving it, and you can keep your free Nimbus™ pillow. Faulty or wrong items are on us. Full details are on our Shipping & Returns page.',
   },
 ];
 

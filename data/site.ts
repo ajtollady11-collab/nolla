@@ -17,6 +17,9 @@ export const site = {
     height: 40,
   },
 
+  /** Customer contact email: shown on Contact, legal pages and FAQs */
+  contactEmail: 'nullacomfort@outlook.com',
+
   currency: 'GBP',
   locale: 'en-GB',
 };

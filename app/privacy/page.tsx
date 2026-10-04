@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { InfoPage } from '@/components/layout/InfoPage';
+import { LegalPage } from '@/components/layout/LegalPage';
+import { privacyPolicy } from '@/data/legal';
 
 export const metadata: Metadata = { title: 'Privacy Policy' };
 
 export default function Page() {
-  return <InfoPage title="Privacy policy." intro="How we collect, use and look after your information." />;
+  return <LegalPage content={privacyPolicy} />;
 }
