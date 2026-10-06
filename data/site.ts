@@ -42,6 +42,7 @@ export const socialProof = {
 
 export const navLinks = [
   { label: 'Shop', href: '/shop' },
+  { label: 'Nolla Nest™', href: '/products/nolla-nest' },
   { label: 'FAQ', href: '/faq' },
 ];
 
@@ -49,10 +50,10 @@ export const footerLinks = [
   {
     title: 'Shop',
     links: [
-      { label: 'Shop', href: '/shop' },
-      { label: 'Nolla Nest', href: '/products/nolla-nest' },
-      { label: 'Nolla Nuv', href: '/products/nolla-nuv' },
-      { label: 'Nolla Nook', href: '/products/nolla-nook' },
+      { label: 'All products', href: '/shop' },
+      { label: 'Nolla Nest™', href: '/products/nolla-nest' },
+      { label: 'Nolla Nuv™', href: '/products/nolla-nuv' },
+      { label: 'Nolla Nook™', href: '/products/nolla-nook' },
     ],
   },
   {
@@ -66,7 +67,7 @@ export const footerLinks = [
   {
     title: 'Legal',
     links: [
-      { label: 'Privacy Policy', href: '/privacy' },
+      { label: 'Privacy', href: '/privacy' },
       { label: 'Terms', href: '/terms' },
     ],
   },
@@ -91,7 +92,7 @@ export const showCompareAtPrices = true;
 export const giftPromo = {
   bar: 'Free Nimbus™ cloud pillow with every order',
   short: 'Free Nimbus™ cloud pillow',
-  long: 'Every order comes with a free Nimbus™ cloud pillow. No code needed, it’s added automatically.',
+  long: 'Every order includes a Nimbus™: a soft, squishy 25 cm cloud pillow. No code needed, it’s added to your order automatically.',
 };
 
 /**

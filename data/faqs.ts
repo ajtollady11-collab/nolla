@@ -26,6 +26,12 @@ export const faqs: FAQItem[] = [
       'Every order comes with a free Nimbus™ cloud pillow. You don’t need a code: it’s added to your order automatically, whatever you buy.',
   },
   {
+    id: 'nuv-material',
+    question: 'What is the Nuv™ made from?',
+    answer:
+      'The Nuv™ is a dense faux rabbit-fur velvet (no real fur) with a soft, rippled surface. It’s thick and weighty: our largest size is about 2.8 kg.',
+  },
+  {
     id: 'nuv-sizes',
     question: 'What sizes does the Nuv™ come in?',
     answer:
