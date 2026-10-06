@@ -63,6 +63,7 @@ export function VariantSelector({
           );
         })}
       </div>
+      {option.hint && <p className="mt-3 text-xs leading-relaxed text-charcoal/55">{option.hint}</p>}
     </fieldset>
   );
 }

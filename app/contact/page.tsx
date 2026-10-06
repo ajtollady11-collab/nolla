@@ -12,7 +12,7 @@ export default function Page() {
         <a href={`mailto:${site.contactEmail}`} className="font-medium text-charcoal underline decoration-charcoal/25 underline-offset-4 hover:decoration-charcoal">
           {site.contactEmail}
         </a>
-        . We aim to reply within one working day.
+        .
       </p>
       <p className="mt-4">For orders, include your name and the email you used at checkout so we can find it quickly.</p>
     </InfoPage>

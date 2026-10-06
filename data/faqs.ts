@@ -1,7 +1,4 @@
-/**
- * FAQ content. Answers marked PLACEHOLDER need confirming against
- * final supplier, delivery and returns information before launch.
- */
+/** FAQ content. Keep answers consistent with data/legal.ts and data/site.ts. */
 
 export type FAQItem = {
   id: string;
@@ -36,21 +33,15 @@ export const faqs: FAQItem[] = [
   },
   {
     id: 'nook-size',
-    // PLACEHOLDER: add a height guide once confirmed with the supplier
     question: 'What length Nook™ should I get?',
-    answer: 'The Nook™ comes in 120, 150 and 180 cm lengths. A height guide will be added here before launch.',
+    answer:
+      'As a rough guide: 120 cm for kids, 150 cm for teens and petite adults, and 180 cm for most adults. Sizes are approximate, so if you’re unsure, email us and we’ll help you choose.',
   },
   {
     id: 'colours',
     question: 'What colours are available?',
     answer:
       'The Nuv™ comes in Tosca White, Grey, Charcoal, Coffee, Sage and Pink. The Nook™ comes in Light Grey, Navy and Pink.',
-  },
-  {
-    id: 'nuv-care',
-    // PLACEHOLDER
-    question: 'How do I care for my Nuv™ and Nook™?',
-    answer: 'Full care instructions will be added here once confirmed with our supplier.',
   },
   {
     id: 'delivery',
@@ -62,7 +53,7 @@ export const faqs: FAQItem[] = [
     id: 'separate',
     question: 'Will everything arrive together?',
     answer:
-      'Not always. Each item, including your free gift, ships separately, so they may arrive on different days.',
+      'Usually, but not always. Your order may arrive in more than one package, and you may get separate tracking for each. Your free gift may also arrive on its own.',
   },
   {
     id: 'returns',

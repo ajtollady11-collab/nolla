@@ -30,8 +30,9 @@ export function ProductCard({ product, cta, className, priority }: { product: Pr
             </Link>
           </h3>
           <p className="mt-2 text-[0.95rem] text-charcoal/65">
-            {product.kind} <span className="ml-1 font-semibold text-charcoal">
-              {hasPriceRange(product) && <span className="font-normal text-charcoal/60">from </span>}
+            {product.kind}{' '}
+            <span className="whitespace-nowrap font-semibold text-charcoal">
+              {hasPriceRange(product) && <span className="font-normal text-charcoal/60">From </span>}
               {formatPrice(fromPrice(product))}
             </span>
           </p>

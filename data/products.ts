@@ -42,6 +42,8 @@ export type ProductOption = {
   values: OptionValue[];
   /** Pre-selected value; defaults to the first */
   defaultValue?: string;
+  /** Small helper line under the choices (e.g. a size guide note) */
+  hint?: string;
 };
 
 export type ProductDetail = {
@@ -117,9 +119,10 @@ const nuvSizes: OptionValue[] = [
 ].map((s) => ({ ...s, compareAtPrice: s.price + COMPARE_AT_UPLIFT }));
 
 const nookSizes: OptionValue[] = [
-  { value: '120', label: '120 cm', price: 2999 },
-  { value: '150', label: '150 cm', price: 4299 },
-  { value: '180', label: '180 cm', price: 4999 },
+  // ROUGH SIZE GUIDE: approximate until CJ confirms exact heights
+  { value: '120', label: '120 cm', note: 'Kids', price: 2999 },
+  { value: '150', label: '150 cm', note: 'Teens & petite', price: 4299 },
+  { value: '180', label: '180 cm', note: 'Most adults', price: 4999 },
 ].map((s) => ({ ...s, compareAtPrice: s.price + COMPARE_AT_UPLIFT }));
 
 /** The Nest™ always contains the largest size of each piece. */
@@ -135,7 +138,7 @@ export const products: Record<ProductSlug, Product> = {
     name: 'Nolla Nest™',
     shortName: 'Nest™',
     kind: 'The bundle.',
-    subtitle: 'Nuv™ Blanket + Nook™ Hooded Blanket',
+    subtitle: 'Nuv™ blanket + Nook™ hooded blanket',
     positioning: 'Your new favourite place.',
     price: NEST_PRICE,
     compareAtPrice: NEST_SEPARATE_PRICE,
@@ -165,7 +168,7 @@ export const products: Record<ProductSlug, Product> = {
       },
       {
         title: 'Delivery',
-        body: 'Free UK delivery, usually 5–11 working days. Each piece ships separately, so they may arrive on different days.',
+        body: 'Free UK delivery, usually 5–11 working days. Your order may arrive in more than one package. Full details are on our Shipping & Returns page.',
       },
     ],
     primaryCta: 'Build your nest',
@@ -200,8 +203,6 @@ export const products: Record<ProductSlug, Product> = {
         title: 'Sizes',
         body: '100 × 150 cm is a sofa throw (about 1.1 kg). 120 × 200 and 130 × 160 cm suit a single bed. 150 × 200 and 180 × 200 cm cover a double. 200 × 230 cm (about 2.8 kg) is big enough to share.',
       },
-      // PLACEHOLDER: confirm material and washing instructions with the supplier
-      { title: 'Care', body: 'Full care instructions will be confirmed before launch.' },
     ],
     primaryCta: 'Add to cart',
     isBundle: false,
@@ -222,7 +223,14 @@ export const products: Record<ProductSlug, Product> = {
     images: IMAGES.nook,
     options: [
       { id: 'colour', name: 'Colour', display: 'swatch', values: nookColours },
-      { id: 'size', name: 'Length', display: 'pill', values: nookSizes, defaultValue: '150' },
+      {
+        id: 'size',
+        name: 'Length',
+        display: 'pill',
+        values: nookSizes,
+        defaultValue: '180',
+        hint: 'Sizes are approximate. Not sure which to pick? Email us and we’ll help.',
+      },
     ],
     highlights: ['Soft flannel', 'Big cosy hood', 'Free Nimbus™ cloud pillow'],
     details: [
@@ -231,12 +239,10 @@ export const products: Record<ProductSlug, Product> = {
         body: 'Soft, warm flannel with a roomy hood. Loose enough to pull your knees up inside.',
       },
       {
-        // PLACEHOLDER: add a height guide once confirmed with the supplier
+        // ROUGH GUIDE: update with exact heights once CJ confirms
         title: 'Lengths',
-        body: 'Comes in 120, 150 and 180 cm lengths. The 180 cm is about 1.2 kg. A height guide will be added before launch.',
+        body: 'Comes in three lengths: 120 cm for kids, 150 cm for teens and petite adults, and 180 cm for most adults (about 1.2 kg). Sizes are approximate; if you’re unsure, email us and we’ll help you choose.',
       },
-      // PLACEHOLDER
-      { title: 'Care', body: 'Full care instructions will be confirmed before launch.' },
     ],
     primaryCta: 'Add to cart',
     isBundle: false,

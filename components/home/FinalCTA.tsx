@@ -20,7 +20,7 @@ export function FinalCTA({
           className="absolute left-1/2 top-1/2 h-[110%] w-[min(100%,820px)] -translate-x-1/2 -translate-y-1/2 opacity-80"
         />
         <div className="relative">
-          <h2 className="mx-auto max-w-[12ch] font-serif text-[3rem] font-light leading-[0.95] tracking-[-0.045em] sm:text-display-lg lg:text-display-xl">
+          <h2 className="mx-auto max-w-[12ch] text-balance font-serif text-[3rem] font-light leading-[0.95] tracking-[-0.045em] sm:text-display-lg lg:text-display-xl">
             {heading}
           </h2>
           <p className="mx-auto mt-5 max-w-[34ch] text-lg text-charcoal/70">{subheading}</p>

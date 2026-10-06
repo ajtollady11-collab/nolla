@@ -17,7 +17,7 @@ export default function CheckoutSuccessPage() {
       </h1>
       <p className="mt-5 max-w-[42ch] text-lg leading-relaxed text-charcoal/70">
         Your payment went through and a receipt is on its way to your inbox. We’ll email your tracking details as soon as
-        your order ships. Items travel separately, so they may arrive on different days.
+        your order ships. Your order may arrive in more than one package.
       </p>
       <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-charcoal px-4 py-2 text-xs font-medium text-cream">
         <Gift className="h-3.5 w-3.5" aria-hidden />

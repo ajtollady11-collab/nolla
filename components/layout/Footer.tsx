@@ -11,6 +11,7 @@ export function Footer() {
           <div>
             <Logo size="lg" />
             <p className="mt-3 font-serif text-xl font-light text-charcoal/70">{site.tagline}</p>
+            {socials.length > 0 && (
             <ul className="mt-8 flex gap-2">
               {socials.map((s) => (
                 <li key={s.name}>
@@ -26,6 +27,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
             {footerLinks.map((group) => (

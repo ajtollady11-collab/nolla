@@ -7,8 +7,8 @@ import { useCart } from './CartProvider';
 import { BundleUpsell } from '@/components/product/BundleUpsell';
 import { Button } from '@/components/ui/Button';
 import { SmartImage } from '@/components/ui/SmartImage';
-import { products, describeSelections, fromPrice, galleryFor, NEST } from '@/data/products';
-import { shippingRegions, type ShippingRegion } from '@/data/site';
+import { products, describeSelections, galleryFor, NEST } from '@/data/products';
+import { deliveryCopy, shippingRegions, type ShippingRegion } from '@/data/site';
 import { GiftLine } from './GiftLine';
 import { DiscountField } from './DiscountField';
 import { formatPrice } from '@/lib/format';
@@ -103,7 +103,7 @@ export function CartDrawer() {
           <div className="flex flex-1 flex-col items-center justify-center px-8 pb-10 pt-6 text-center">
             <p className="font-serif text-2xl font-light tracking-[-0.02em]">Nothing here yet.</p>
             <p className="mt-2 max-w-[28ch] text-sm text-charcoal/60">
-              The Nolla Nest™ is a good place to start: the Nuv™ and Nook™ together from {formatPrice(fromPrice(NEST))}.
+              The Nolla Nest™ is a good place to start: the Nuv™ and Nook™ together for {formatPrice(NEST.price)}.
             </p>
             <div className="mt-7 flex w-full flex-col items-center gap-3">
               <Button href={`/products/${NEST.slug}`} onClick={close} size="lg" fullWidth>
@@ -258,7 +258,7 @@ export function CartDrawer() {
                 </fieldset>
 
                 <p className="mt-2.5 px-1 text-[0.7rem] leading-relaxed text-charcoal/50">
-                  Items ship separately (including your free gift), so they may arrive on different days.
+                  {deliveryCopy.multiplePackages}
                 </p>
               </li>
 

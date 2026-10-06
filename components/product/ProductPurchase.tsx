@@ -9,7 +9,7 @@ import { StarRating } from '@/components/ui/StarRating';
 import { VariantSelector } from './VariantSelector';
 import { BundleUpsell } from './BundleUpsell';
 import { priceFor, NEST_SAVING, type Product } from '@/data/products';
-import { INTERNATIONAL_FROM } from '@/data/site';
+import { INTERNATIONAL_FROM, deliveryCopy } from '@/data/site';
 import { GiftCallout } from '@/components/gift/GiftCallout';
 import { Truck } from 'lucide-react';
 import { socialProof } from '@/data/site';
@@ -92,7 +92,7 @@ export function ProductPurchase({
           <Truck className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.7} aria-hidden />
           <span>
             Free UK delivery. International from {formatPrice(INTERNATIONAL_FROM)}.
-            {product.isBundle && ' Each piece ships separately.'}
+            {product.isBundle && ` ${deliveryCopy.multiplePackages}`}
           </span>
         </p>
       </div>

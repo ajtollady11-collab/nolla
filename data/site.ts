@@ -5,7 +5,8 @@ export const site = {
   name: 'nolla',
   tagline: 'make staying in feel better.',
   description: 'Nolla makes the Nest: a beanbag and blanket set for switching off at home.',
-  url: 'https://nolla.co.uk', // PLACEHOLDER: set to the live domain
+  /** Live site address (set NEXT_PUBLIC_SITE_URL in Vercel when the domain changes) */
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://nolla-rose.vercel.app',
 
   /**
    * Logo. Leave `logoSrc` as null to use the text wordmark placeholder.
@@ -71,12 +72,12 @@ export const footerLinks = [
   },
 ];
 
-/** PLACEHOLDER handles: replace with the real accounts. */
-export const socials = [
-  { name: 'TikTok', href: 'https://www.tiktok.com/', icon: 'tiktok' },
-  { name: 'Instagram', href: 'https://www.instagram.com/', icon: 'instagram' },
-  { name: 'Pinterest', href: 'https://www.pinterest.com/', icon: 'pinterest' },
-] as const;
+/**
+ * Social accounts shown in the footer. Add the real profile links, e.g.
+ *   { name: 'TikTok', href: 'https://www.tiktok.com/@yourhandle', icon: 'tiktok' },
+ * The icons stay hidden while this list is empty.
+ */
+export const socials: { name: string; href: string; icon: 'tiktok' | 'instagram' | 'pinterest' }[] = [];
 
 /**
  * Show struck-through "was" prices on individual products.
@@ -124,3 +125,9 @@ export const shippingRegions: Record<ShippingRegion, { id: ShippingRegion; label
 };
 
 export const INTERNATIONAL_FROM = shippingRegions.international.methods[0].price;
+
+/** Delivery wording reused across the site, so it can never contradict the Shipping & Returns page */
+export const deliveryCopy = {
+  ukEstimate: '5–11 working days',
+  multiplePackages: 'Your order may arrive in more than one package.',
+};
