@@ -51,12 +51,12 @@ You should almost never need to edit a component to change content.
 | Colours, radii, shadows, type scale | `tailwind.config.ts` |
 | Fonts | `app/fonts.ts` |
 
-### Things that are placeholders on purpose
+### Things to fill in
 
-- **Images.** Everything in `public/images/placeholders` is a placeholder drawing (regenerate with `python3 scripts/generate-placeholders.py`). Add real photos to `public/images` and update the paths in `data/images.ts`.
+- **Images.** All product and homepage photos live in `public/images` and are registered in `data/images.ts` and `data/home.ts`.
 - **Logo.** The text wordmark is the placeholder. Add the real file (for example `public/brand/nolla-logo.svg`) and set `site.logo.src`.
 - **Customer count.** `socialProof.customerCount` is `null`, so the badge reads "Loved by Nolla customers". Set it to a real figure, such as `'2,400'`, and it becomes "Loved by 2,400 people" everywhere.
-- **Reviews.** The six reviews are samples for layout only and are flagged `placeholder: true`. While any sample is showing, a small "Sample reviews shown for design preview" note appears. It disappears once you replace them with real reviews.
+- **Reviews.** `data/reviews.ts` is empty on purpose: add genuine reviews only. The reviews section and star badges stay hidden until there are some.
 - **Variants.** Nuv™: 6 colours, 6 sizes. Nook™: 3 colours, 3 lengths. Nest™: largest size of each, colours chosen. Nimbus™: free gift (25 cm, white) added to every order.
 - **Product details and FAQ answers.** Supplier-dependent answers (dimensions, care, delivery, returns) are marked `// PLACEHOLDER` in the data files.
 - **Social links** point at the platform home pages.

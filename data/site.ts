@@ -88,6 +88,9 @@ export const socials: { name: string; href: string; icon: 'tiktok' | 'instagram'
  */
 export const showCompareAtPrices = true;
 
+/** Sliding announcement bar messages (only things the business genuinely offers) */
+export const announcementItems = ['Free Nimbus™ with every order', 'Free UK delivery', '14-day returns', 'Secure checkout'];
+
 /** Free gift promotion: wording used across the site */
 export const giftPromo = {
   bar: 'Free Nimbus™ cloud pillow with every order',

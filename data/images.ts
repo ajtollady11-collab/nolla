@@ -52,7 +52,10 @@ export const NOOK_COLOUR_IMAGES: Record<string, ImageAsset[]> = {
   pink: nook('pink', 'Pink'),
 };
 
-const NIMBUS: ImageAsset = { src: '/images/placeholders/nimbus.svg', alt: 'The Nimbus cloud pillow, free with every order.' };
+const NIMBUS: ImageAsset = {
+  src: '/images/nimbus/nimbus-cloud-pillow.webp',
+  alt: 'The Nimbus cloud pillow: a fluffy white cloud with a little smile and two dangling legs, sitting on a wooden bench.',
+};
 
 export const IMAGES = {
   /** Home hero */

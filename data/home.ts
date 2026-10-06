@@ -10,12 +10,17 @@ import type { ImageAsset } from './images';
 
 export const homeImages = {
   /** Approved hero (16:9). focus = where to keep in frame when cropped on phones */
+  /**
+   * Approved full-screen hero. The woman + blanket sit on the RIGHT; the wall on the
+   * LEFT is left clear for copy. focusDesktop/focusMobile control the crop.
+   */
   hero: {
-    src: '/images/home/hero-nuv-wrapped.webp',
-    alt: 'A woman wrapped up in the cream Nolla Nuv blanket, eyes closed and smiling, in a sunny armchair.',
-    width: 1672,
-    height: 941,
-    focus: '58% 40%',
+    src: '/images/home/hero-nuv-armchair.webp',
+    alt: 'A woman wrapped in the cream Nolla Nuv blanket, smiling softly in an armchair by a sunny window.',
+    width: 1376,
+    height: 768,
+    focusDesktop: '72% 50%',
+    focusMobile: '100% 50%',
   },
   /** Approved Nolla Nest image */
   nest: {
