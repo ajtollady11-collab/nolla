@@ -15,10 +15,10 @@ export const homeImages = {
    * LEFT is left clear for copy. focusDesktop/focusMobile control the crop.
    */
   hero: {
-    src: '/images/home/hero-nuv-armchair.webp',
+    src: '/images/home/hero-nuv-faux-fur-2k.webp',
     alt: 'A woman wrapped in the cream Nolla Nuv blanket, smiling softly in an armchair by a sunny window.',
-    width: 1376,
-    height: 768,
+    width: 2752,
+    height: 1536,
     focusDesktop: '72% 50%',
     focusMobile: '100% 50%',
   },
