@@ -2,7 +2,7 @@ import { Gift } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { SmartImage } from '@/components/ui/SmartImage';
 import { Reveal } from '@/components/ui/Reveal';
-import { GIFT, NEST } from '@/data/products';
+import { GIFT } from '@/data/products';
 import { giftPromo } from '@/data/site';
 import { cn } from '@/lib/cn';
 
@@ -27,8 +27,8 @@ export function GiftFeature({ className }: { className?: string }) {
               on us.
             </h2>
             <p className="mt-5 max-w-[38ch] text-[1.02rem] leading-relaxed text-cream/75">{giftPromo.long}</p>
-            <Button href={`/products/${NEST.slug}`} size="lg" variant="secondary" className="mt-8 w-full sm:w-fit">
-              Build your nest
+            <Button href="/shop" size="lg" variant="secondary" className="mt-8 w-full sm:w-fit">
+              Shop Nolla
             </Button>
           </div>
         </div>

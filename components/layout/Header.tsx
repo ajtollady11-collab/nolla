@@ -62,12 +62,9 @@ export function Header() {
                   pathname === l.href && 'text-charcoal',
                 )}
               >
-                {l.label}
+                <TM>{l.label}</TM>
               </Link>
             ))}
-            <Button href={`/products/${NEST.slug}`} size="sm" className="ml-2">
-              Shop the Nest
-            </Button>
             <CartButton className="ml-1" />
           </nav>
 
@@ -119,7 +116,7 @@ export function Header() {
             </button>
           </div>
           <nav aria-label="Mobile" className="mt-10 flex flex-col gap-1">
-            {[{ label: 'Nolla Nest™', href: '/products/nolla-nest' }, ...navLinks].map((l) => (
+            {navLinks.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
