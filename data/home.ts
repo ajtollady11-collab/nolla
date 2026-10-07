@@ -127,13 +127,39 @@ export const textureImages: { image: ImageAsset; zoom: number; origin: string }[
 ];
 
 /**
- * Real-life / UGC. GENUINE customer or creator content only.
- * The section stays hidden while this list is empty.
- * Example:
- *   { type: 'image', src: '/images/ugc/sophie.webp', alt: '…', credit: '@sophie', href: 'https://www.tiktok.com/@…' }
+ * ─────────────────────────────────────────────────────────────
+ *  REAL-LIFE VIDEOS (homepage)
+ *  GENUINE Nolla footage only: your own clips, or creator/customer clips
+ *  you have permission to use. Never other people's videos of other products.
+ *
+ *  While this list is EMPTY, the homepage shows "Staying in isn't doing nothing."
+ *  As soon as it has videos, this section takes its place automatically.
+ *
+ *  Each video: vertical 9:16 MP4 in /public/videos, compressed (≈2–4 MB) with the
+ *  audio track removed, plus a poster image (first frame) for instant loading:
+ *    { src: '/videos/nolla-01.mp4', poster: '/videos/nolla-01.jpg',
+ *      alt: 'Unboxing the Nolla Nest', product: 'nolla-nest', credit: '@yourhandle' }
+ *  Videos always play silently (muted, no sound controls).
+ * ─────────────────────────────────────────────────────────────
  */
-export type UgcItem = { type: 'image' | 'video'; src: string; alt: string; credit?: string; href?: string; poster?: string };
-export const ugcItems: UgcItem[] = [];
+export type UgcVideo = {
+  src: string;
+  poster: string;
+  /** What happens in the clip (for screen readers) */
+  alt: string;
+  /** Optional: shows a "Shop …" link under the clip */
+  product?: 'nolla-nest' | 'nolla-nuv' | 'nolla-nook';
+  /** Optional credit, e.g. a creator's @handle (with their permission) */
+  credit?: string;
+};
+
+export const ugcCopy = {
+  eyebrow: 'Real life',
+  headline: 'See Nolla in real life.',
+  body: 'No studio, no script. Just staying in.',
+};
+
+export const ugcItems: UgcVideo[] = [];
 
 export const brandStoryCopy = {
   eyebrow: 'Why Nolla',
