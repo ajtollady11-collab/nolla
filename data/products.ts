@@ -1,4 +1,4 @@
-import { IMAGES, NUV_COLOUR_IMAGES, NOOK_COLOUR_IMAGES, type ImageAsset } from './images';
+import { IMAGES, NUV_COLOUR_IMAGES, NUV_COLOURWAYS, NOOK_COLOUR_IMAGES, type ImageAsset } from './images';
 import { showCompareAtPrices } from './site';
 
 /**
@@ -30,6 +30,9 @@ export type OptionValue = {
   compareAtPrice?: number;
   /** Photos shown in the gallery when this value is selected (first = main photo) */
   images?: ImageAsset[];
+  /** Colourway photos used by the product-page story sections */
+  lifestyle?: ImageAsset;
+  texture?: ImageAsset;
   /** Future: Square variation ID */
   externalId?: string;
   available?: boolean;
@@ -74,6 +77,10 @@ export type Product = {
   /** Label for the primary button on this product's page */
   primaryCta: string;
   isBundle: boolean;
+  /** Product-page benefit cards (optional) */
+  benefits?: { title: string; body: string }[];
+  /** Show the "Feel the difference" + "More than a blanket" sections (needs colourway photos) */
+  storySections?: boolean;
   /** Free gift: added to every order automatically, never sold on its own */
   isGift?: boolean;
   includes?: ProductSlug[];
@@ -100,7 +107,7 @@ const nuvColours: OptionValue[] = [
   { value: 'coffee', label: 'Coffee', swatch: '#C4A485' },
   { value: 'sage', label: 'Sage', swatch: '#BCC8AA' },
   { value: 'pink', label: 'Pink', swatch: '#D9AFA9' },
-].map((c) => ({ ...c, images: NUV_COLOUR_IMAGES[c.value] }));
+].map((c) => ({ ...c, images: NUV_COLOUR_IMAGES[c.value], ...NUV_COLOURWAYS[c.value] }));
 
 const nookColours: OptionValue[] = [
   { value: 'light-grey', label: 'Light Grey', swatch: '#5F5D5C' },
@@ -206,6 +213,25 @@ export const products: Record<ProductSlug, Product> = {
     ],
     primaryCta: 'Add to cart',
     isBundle: false,
+    storySections: true,
+    benefits: [
+      {
+        title: 'Thick, cloud-like feel',
+        body: 'Dense faux rabbit fur with a deep, rippled surface. Weighty enough to feel like a hug: about 2.8 kg in the largest size.',
+      },
+      {
+        title: 'A size for every sofa',
+        body: 'Six sizes, from a 100 × 150 cm throw to a 200 × 230 cm blanket that’s big enough to share.',
+      },
+      {
+        title: 'Six calm colours',
+        body: 'From Tosca White to Charcoal, chosen to sit softly in a warm, lived-in home.',
+      },
+      {
+        title: 'Easy to say yes to',
+        body: 'Free UK delivery, 14-day returns and a free Nimbus™ cloud pillow with every order.',
+      },
+    ],
   },
 
   'nolla-nook': {
