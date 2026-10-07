@@ -2,9 +2,10 @@ import Image, { type ImageProps } from 'next/image';
 
 /**
  * Thin wrapper around next/image.
- * Placeholder SVGs skip optimisation; real photography (jpg/webp) is optimised.
+ * Photos are served at high quality (90) by default: fabric and fur detail
+ * falls apart at the usual 75. SVGs skip optimisation.
  */
 export function SmartImage(props: ImageProps) {
   const src = typeof props.src === 'string' ? props.src : '';
-  return <Image {...props} alt={props.alt} unoptimized={props.unoptimized ?? src.endsWith('.svg')} />;
+  return <Image {...props} alt={props.alt} quality={props.quality ?? 90} unoptimized={props.unoptimized ?? src.endsWith('.svg')} />;
 }
