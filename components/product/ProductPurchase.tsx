@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, Lock, RotateCcw, Truck } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/cart/CartProvider';
 import { Button } from '@/components/ui/Button';
 import { PriceTag } from '@/components/ui/PriceTag';
@@ -11,7 +12,6 @@ import { BundleUpsell } from './BundleUpsell';
 import { priceFor, NEST_SAVING, type Product } from '@/data/products';
 import { INTERNATIONAL_FROM, deliveryCopy } from '@/data/site';
 import { GiftCallout } from '@/components/gift/GiftCallout';
-import { Truck } from 'lucide-react';
 import { socialProof } from '@/data/site';
 import { hasReviews } from '@/data/reviews';
 import { formatPrice } from '@/lib/format';
@@ -29,6 +29,7 @@ export function ProductPurchase({
   onSelect: (optionId: string, value: string) => void;
 }) {
   const { add } = useCart();
+  const router = useRouter();
   const [added, setAdded] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,11 @@ export function ProductPurchase({
     window.setTimeout(() => setAdded(false), 1800);
   }
 
+  function handleBuyNow() {
+    add(product.slug, selections, { openCart: false });
+    router.push('/checkout');
+  }
+
   const { price, compareAtPrice } = priceFor(product, selections);
   const ctaLabel = added ? 'Added' : product.primaryCta;
 
@@ -68,9 +74,7 @@ export function ProductPurchase({
         </a>
       )}
 
-      <PriceTag price={price} compareAtPrice={compareAtPrice} size="lg" className="mt-6" />
-
-      <p className="mt-6 max-w-[48ch] text-[1.02rem] leading-relaxed text-charcoal/75">{product.shortDescription}</p>
+      <p className="mt-5 max-w-[48ch] text-[1.02rem] leading-relaxed text-charcoal/75">{product.shortDescription}</p>
 
       <div className="mt-8 space-y-7">
         {product.options.map((option) => (
@@ -83,21 +87,43 @@ export function ProductPurchase({
         ))}
       </div>
 
-      <div ref={ctaRef} className="mt-9">
-        <Button onClick={handleAdd} size="lg" fullWidth className={cn(product.isBundle && 'h-16 text-[0.85rem]')}>
+      <div className="mt-8 border-t border-charcoal/10 pt-6">
+        <PriceTag price={price} compareAtPrice={compareAtPrice} size="lg" />
+      </div>
+
+      <GiftCallout className="mt-5" productShortName={product.shortName} />
+
+      <div ref={ctaRef} className="mt-5 grid grid-cols-[minmax(0,1fr)] gap-3 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <Button onClick={handleAdd} size="lg" fullWidth className={cn(product.isBundle && 'text-[0.85rem]')}>
           {added && <Check className="h-4 w-4 animate-rise" aria-hidden />}
           {ctaLabel}
         </Button>
-        <p className="mt-4 flex items-start gap-2.5 text-sm text-charcoal/70">
-          <Truck className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.7} aria-hidden />
-          <span>
-            Free UK delivery. International from {formatPrice(INTERNATIONAL_FROM)}.
-            {product.isBundle && ` ${deliveryCopy.multiplePackages}`}
-          </span>
-        </p>
+        <Button onClick={handleBuyNow} size="lg" variant="secondary" fullWidth>
+          Buy now
+        </Button>
       </div>
 
-      <GiftCallout className="mt-6" />
+      <ul className="mt-6 space-y-2.5 text-[0.88rem] text-charcoal/75">
+        <li className="flex items-start gap-3">
+          <Truck className="mt-0.5 h-4 w-4 shrink-0 text-mocha" strokeWidth={1.7} aria-hidden />
+          <span>
+            <span className="font-medium text-charcoal">Free UK delivery</span>, usually {deliveryCopy.ukEstimate}. International from{' '}
+            {formatPrice(INTERNATIONAL_FROM)}.{product.isBundle && ` ${deliveryCopy.multiplePackages}`}
+          </span>
+        </li>
+        <li className="flex items-start gap-3">
+          <RotateCcw className="mt-0.5 h-4 w-4 shrink-0 text-mocha" strokeWidth={1.7} aria-hidden />
+          <span>
+            <span className="font-medium text-charcoal">14-day returns</span>: change your mind for any reason.
+          </span>
+        </li>
+        <li className="flex items-start gap-3">
+          <Lock className="mt-0.5 h-4 w-4 shrink-0 text-mocha" strokeWidth={1.7} aria-hidden />
+          <span>
+            <span className="font-medium text-charcoal">Secure checkout</span> with Square: card, Apple Pay and Google Pay.
+          </span>
+        </li>
+      </ul>
 
       {product.isBundle ? (
         <ul className="mt-6 space-y-2.5">

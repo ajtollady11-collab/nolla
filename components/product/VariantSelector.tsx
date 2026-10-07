@@ -31,16 +31,21 @@ export function VariantSelector({
                 type="button"
                 role="radio"
                 aria-checked={isSelected}
-                aria-label={v.label}
-                title={v.label}
                 disabled={disabled}
                 onClick={() => onChange(v.value)}
                 className={cn(
-                  'relative grid h-11 w-11 place-items-center rounded-full transition-transform duration-300 ease-soft hover:scale-105 disabled:opacity-30',
-                  isSelected ? 'ring-[1.5px] ring-charcoal ring-offset-[3px] ring-offset-cream' : 'ring-1 ring-charcoal/10',
+                  'flex min-h-11 items-center gap-2.5 rounded-full border py-1.5 pl-1.5 pr-4 text-sm transition-[border-color,background-color,box-shadow] duration-300 ease-soft disabled:opacity-30',
+                  isSelected
+                    ? 'border-charcoal bg-white text-charcoal shadow-pillow'
+                    : 'border-charcoal/10 bg-white/50 text-charcoal/75 hover:border-charcoal/30 hover:bg-white',
                 )}
               >
-                <span className="h-full w-full rounded-full shadow-inner" style={{ backgroundColor: v.swatch }} />
+                <span
+                  aria-hidden
+                  className={cn('h-7 w-7 shrink-0 rounded-full shadow-inner ring-1 ring-inset ring-charcoal/10', isSelected && 'ring-charcoal/20')}
+                  style={{ backgroundColor: v.swatch }}
+                />
+                <span className={isSelected ? 'font-medium' : undefined}>{v.label}</span>
               </button>
             );
           }

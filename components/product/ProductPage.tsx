@@ -1,4 +1,7 @@
 import { ProductHero } from './ProductHero';
+import { TextureFeel } from './TextureFeel';
+import { FamilyMoments } from './FamilyMoments';
+import { ProductBenefits } from './ProductBenefits';
 import { ProductDetails } from './ProductDetails';
 import { WhatsInside } from './WhatsInside';
 import { ReviewSection } from '@/components/reviews/ReviewSection';
@@ -10,7 +13,7 @@ import type { Product } from '@/data/products';
 
 const faqIdsFor: Partial<Record<Product['slug'], string[]>> = {
   'nolla-nest': ['what-is-nest', 'whats-included', 'free-gift', 'delivery', 'separate'],
-  'nolla-nuv': ['nuv-sizes', 'free-gift', 'colours', 'delivery', 'returns'],
+  'nolla-nuv': ['nuv-material', 'nuv-sizes', 'free-gift', 'colours', 'delivery', 'returns'],
   'nolla-nook': ['nook-size', 'free-gift', 'colours', 'delivery', 'returns'],
 };
 
@@ -23,6 +26,15 @@ export function ProductPage({ product }: { product: Product }) {
       <section className="container-soft pb-8 pt-4 sm:pt-8">
         <ProductHero product={product} />
       </section>
+
+      {/* Story sections (Nuv™): texture → family → benefits */}
+      {product.storySections && (
+        <>
+          <TextureFeel product={product} />
+          <FamilyMoments product={product} />
+        </>
+      )}
+      <ProductBenefits product={product} />
 
       <ProductDetails product={product} />
 
