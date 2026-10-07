@@ -20,7 +20,8 @@ export const homeImages = {
     width: 2752,
     height: 1536,
     focusDesktop: '72% 50%',
-    focusMobile: '100% 50%',
+    /** Phones: full-screen portrait crop, face + upper blanket clear above the overlaid copy */
+    focusMobile: '80% 50%',
   },
   /** Approved Nolla Nest image */
   nest: {
