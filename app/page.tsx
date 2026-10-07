@@ -12,7 +12,7 @@ import { BrandStory } from '@/components/home/BrandStory';
 import { FAQ } from '@/components/faq/FAQ';
 import { HomeFinalCta } from '@/components/home/HomeFinalCta';
 import { faqsById } from '@/data/faqs';
-import { homeFaqIds } from '@/data/home';
+import { homeFaqIds, ugcItems } from '@/data/home';
 
 /**
  * Homepage, in strategic order:
@@ -26,11 +26,11 @@ export default function HomePage() {
       <HomeHero />
       <TrustStrip />
       <NestIntro />
-      <Lifestyle />
+      {/* Real Nolla videos take this slot once added; until then, the moments section */}
+      {ugcItems.length > 0 ? <RealLife /> : <Lifestyle />}
       <WhyNolla />
       <ProductLineup />
       <TextureSection />
-      <RealLife />
       <ReviewSection />
       <GiftFeature />
       <BrandStory />
