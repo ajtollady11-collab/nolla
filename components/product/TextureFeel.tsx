@@ -31,7 +31,7 @@ export function TextureFeel({ product }: { product: Product }) {
       </div>
 
       <ul
-        className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:gap-4 sm:px-8 lg:mx-auto lg:max-w-[1320px] lg:px-12"
+        className="no-scrollbar mt-10 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-2 sm:scroll-px-8 sm:gap-4 sm:px-8 lg:mx-auto lg:max-w-[1320px] lg:px-12"
         aria-label="Nuv™ texture in every colour"
       >
         {colours.map((c, i) => (

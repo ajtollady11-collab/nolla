@@ -15,7 +15,7 @@ export function Lifestyle() {
       </div>
 
       <ul
-        className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:px-8 lg:mx-auto lg:grid lg:max-w-[1320px] lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:px-12"
+        className="no-scrollbar mt-10 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 pb-2 sm:scroll-px-8 sm:px-8 lg:mx-auto lg:grid lg:max-w-[1320px] lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:px-12"
         aria-label="Moments made for Nolla"
       >
         {moments.map((m, i) => (
