@@ -36,7 +36,7 @@ export function RealLife() {
             <li key={v.src} className="w-[62%] shrink-0 snap-start min-[480px]:w-[42%] sm:w-[30%] lg:w-auto">
               <Reveal delay={i * 60}>
                 <div className="relative aspect-[9/16] overflow-hidden rounded-[1.25rem] bg-oat-soft">
-                  <SilentVideo src={v.src} poster={v.poster} label={v.alt} />
+                  <SilentVideo src={v.src} webm={v.webm} poster={v.poster} label={v.alt} />
                 </div>
                 <div className="mt-3 flex items-center justify-between gap-2">
                   {product ? (

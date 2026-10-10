@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
  * Always muted, no controls, no sound button. Loads nothing until it's near
  * the viewport. For reduced-motion users it stays on its poster frame.
  */
-export function SilentVideo({ src, poster, label }: { src: string; poster: string; label: string }) {
+export function SilentVideo({ src, webm, poster, label }: { src: string; webm?: string; poster: string; label: string }) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -37,7 +37,6 @@ export function SilentVideo({ src, poster, label }: { src: string; poster: strin
   return (
     <video
       ref={ref}
-      src={src}
       poster={poster}
       muted
       loop
@@ -48,6 +47,9 @@ export function SilentVideo({ src, poster, label }: { src: string; poster: strin
       controls={false}
       aria-label={label}
       className="h-full w-full object-cover"
-    />
+    >
+      {webm && <source src={webm} type="video/webm" />}
+      <source src={src} type="video/mp4" />
+    </video>
   );
 }
