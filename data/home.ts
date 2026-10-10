@@ -96,7 +96,7 @@ export const lineupCopy = {
   headline: 'Pick your kind of cosy.',
   nuv: {
     tagline: 'The blanket you’ll never want to leave.',
-    body: 'Thick faux rabbit fur with a soft, rippled surface. Six colours, six sizes.',
+    body: 'Thick faux rabbit fur with a soft, rippled surface. Five colours, six sizes.',
     cta: 'Shop Nuv™',
   },
   nook: {
@@ -143,7 +143,10 @@ export const textureImages: { image: ImageAsset; zoom: number; origin: string }[
  * ─────────────────────────────────────────────────────────────
  */
 export type UgcVideo = {
+  /** MP4 (H.264): plays everywhere */
   src: string;
+  /** Optional smaller WebM copy, used by browsers that support it */
+  webm?: string;
   poster: string;
   /** What happens in the clip (for screen readers) */
   alt: string;
@@ -154,12 +157,18 @@ export type UgcVideo = {
 };
 
 export const ugcCopy = {
-  eyebrow: 'Real life',
+  eyebrow: 'Nolla at home',
   headline: 'See Nolla in real life.',
-  body: 'No studio, no script. Just staying in.',
+  body: 'Unboxed, shaken out, shared and slept under.',
 };
 
-export const ugcItems: UgcVideo[] = [];
+export const ugcItems: UgcVideo[] = [
+  { src: '/videos/nolla-01.mp4', webm: '/videos/nolla-01.webm', poster: '/videos/nolla-01.jpg', alt: 'A family of four snuggling under a big cream Nuv blanket on the sofa at night.', product: 'nolla-nuv' },
+  { src: '/videos/nolla-02.mp4', webm: '/videos/nolla-02.webm', poster: '/videos/nolla-02.jpg', alt: 'Unboxing Nuv blankets in five colours and piling them on a bed.', product: 'nolla-nuv' },
+  { src: '/videos/nolla-03.mp4', webm: '/videos/nolla-03.webm', poster: '/videos/nolla-03.jpg', alt: 'Draping pink, charcoal and cream Nuv blankets over a cosy armchair.', product: 'nolla-nuv' },
+  { src: '/videos/nolla-04.mp4', webm: '/videos/nolla-04.webm', poster: '/videos/nolla-04.jpg', alt: 'Someone napping under a pink Nuv blanket as the day turns from afternoon to night.', product: 'nolla-nuv' },
+  { src: '/videos/nolla-05.mp4', webm: '/videos/nolla-05.webm', poster: '/videos/nolla-05.jpg', alt: 'Someone stretching out in bed under a huge cream Nuv blanket.', product: 'nolla-nuv' },
+];
 
 export const brandStoryCopy = {
   eyebrow: 'Why Nolla',
