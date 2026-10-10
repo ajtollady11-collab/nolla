@@ -135,9 +135,9 @@ export const textureImages: { image: ImageAsset; zoom: number; origin: string }[
  *  While this list is EMPTY, the homepage shows "Staying in isn't doing nothing."
  *  As soon as it has videos, this section takes its place automatically.
  *
- *  Each video: vertical 9:16 MP4 in /public/videos, compressed (≈2–4 MB) with the
+ *  Each video: vertical 9:16 MP4 in /public/images, compressed (≈2–4 MB) with the
  *  audio track removed, plus a poster image (first frame) for instant loading:
- *    { src: '/videos/nolla-01.mp4', poster: '/videos/nolla-01.jpg',
+ *    { src: '/images/nolla-01.mp4', poster: '/images/nolla-01.jpg',
  *      alt: 'Unboxing the Nolla Nest', product: 'nolla-nest', credit: '@yourhandle' }
  *  Videos always play silently (muted, no sound controls).
  * ─────────────────────────────────────────────────────────────
@@ -163,11 +163,11 @@ export const ugcCopy = {
 };
 
 export const ugcItems: UgcVideo[] = [
-  { src: '/videos/nolla-01.mp4', webm: '/videos/nolla-01.webm', poster: '/videos/nolla-01.jpg', alt: 'A family of four snuggling under a big cream Nuv blanket on the sofa at night.', product: 'nolla-nuv' },
-  { src: '/videos/nolla-02.mp4', webm: '/videos/nolla-02.webm', poster: '/videos/nolla-02.jpg', alt: 'Unboxing Nuv blankets in five colours and piling them on a bed.', product: 'nolla-nuv' },
-  { src: '/videos/nolla-03.mp4', webm: '/videos/nolla-03.webm', poster: '/videos/nolla-03.jpg', alt: 'Draping pink, charcoal and cream Nuv blankets over a cosy armchair.', product: 'nolla-nuv' },
-  { src: '/videos/nolla-04.mp4', webm: '/videos/nolla-04.webm', poster: '/videos/nolla-04.jpg', alt: 'Someone napping under a pink Nuv blanket as the day turns from afternoon to night.', product: 'nolla-nuv' },
-  { src: '/videos/nolla-05.mp4', webm: '/videos/nolla-05.webm', poster: '/videos/nolla-05.jpg', alt: 'Someone stretching out in bed under a huge cream Nuv blanket.', product: 'nolla-nuv' },
+  { src: '/images/nolla-01.mp4', webm: '/images/nolla-01.webm', poster: '/images/nolla-01.jpg', alt: 'A family of four snuggling under a big cream Nuv blanket on the sofa at night.', product: 'nolla-nuv' },
+  { src: '/images/nolla-02.mp4', webm: '/images/nolla-02.webm', poster: '/images/nolla-02.jpg', alt: 'Unboxing Nuv blankets in five colours and piling them on a bed.', product: 'nolla-nuv' },
+  { src: '/images/nolla-03.mp4', webm: '/images/nolla-03.webm', poster: '/images/nolla-03.jpg', alt: 'Draping pink, charcoal and cream Nuv blankets over a cosy armchair.', product: 'nolla-nuv' },
+  { src: '/images/nolla-04.mp4', webm: '/images/nolla-04.webm', poster: '/images/nolla-04.jpg', alt: 'Someone napping under a pink Nuv blanket as the day turns from afternoon to night.', product: 'nolla-nuv' },
+  { src: '/images/nolla-05.mp4', webm: '/images/nolla-05.webm', poster: '/images/nolla-05.jpg', alt: 'Someone stretching out in bed under a huge cream Nuv blanket.', product: 'nolla-nuv' },
 ];
 
 export const brandStoryCopy = {
