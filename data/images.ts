@@ -36,7 +36,6 @@ const NUV_SCENES: [string, string][] = [
  */
 const NUV_LABELS: Record<string, string> = {
   'tosca-white': 'Tosca White',
-  grey: 'Grey',
   charcoal: 'Charcoal',
   coffee: 'Coffee',
   sage: 'Sage',
@@ -69,7 +68,6 @@ export const NUV_COLOUR_IMAGES: Record<string, ImageAsset[]> = {
       ['bed', 'thrown over a bed'],
     ]),
   ),
-  grey: withColourway('grey', nuv('grey', 'Grey', NUV_SCENES)),
   charcoal: withColourway('charcoal', nuv('charcoal', 'Charcoal', NUV_SCENES)),
   coffee: withColourway('coffee', nuv('coffee', 'Coffee', NUV_SCENES)),
   sage: withColourway('sage', nuv('sage', 'Sage', NUV_SCENES)),
@@ -92,7 +90,7 @@ export const IMAGES = {
   /** Home hero */
   hero: { src: '/images/nuv/nuv-tosca-white-wrapped.webp', alt: 'Someone smiling, wrapped up in the Tosca White Nolla Nuv blanket in a sunny armchair.' },
   /** "Or get the whole setup." block */
-  nestFeature: { src: '/images/nook/nook-light-grey-sofa.webp', alt: 'Someone curled up on the sofa in the Nolla Nook hooded blanket.' },
+  nestFeature: { src: '/images/home/nest-set.webp', alt: 'The Nolla Nest: the cream Nuv blanket and charcoal Nook hooded blanket together on an armchair.' },
   /** Extra photos shown for every colour (after the colour's own photos). Empty: every photo is colour-specific. */
   nest: [] as ImageAsset[],
   nuv: [] as ImageAsset[],
