@@ -35,7 +35,7 @@ export function NestFeature({ heading = 'Or get the whole setup.', className }: 
           <h2 className="px-3 pb-6 pt-7 font-serif text-[2.6rem] font-light leading-[0.95] tracking-[-0.04em] sm:px-8 sm:pt-10 sm:text-display-md lg:hidden">
             {heading}
           </h2>
-          <div className="group relative aspect-[4/3] overflow-hidden rounded-5xl bg-oat-soft lg:aspect-auto lg:h-full lg:min-h-[560px]">
+          <div className="group relative aspect-[4/5] overflow-hidden rounded-5xl bg-oat-soft lg:aspect-auto lg:h-full lg:min-h-[560px]">
             <SmartImage
               src={IMAGES.nestFeature.src}
               alt={IMAGES.nestFeature.alt}
